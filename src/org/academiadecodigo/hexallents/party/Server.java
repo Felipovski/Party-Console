@@ -1,11 +1,13 @@
 package org.academiadecodigo.hexallents.party;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -55,19 +57,63 @@ public class Server {
         }
     }
 
+    private void sendAll(String string) {
+
+        for (PlayerWorker p : playerWorkerSet) {
+
+            p.send(string);
+        }
+    }
 
     private class PlayerWorker implements Runnable {
 
         private final Socket socket;
+        private BufferedReader in;
+        private PrintWriter out;
+        private String name;
 
         private PlayerWorker(Socket socket) {
 
+
             this.socket = socket;
+            try {
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                out = new PrintWriter(socket.getOutputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
 
         @Override
         public void run() {
 
+            send("What is your name?");
+            name = read();
+
+        }
+
+        private void send(String string) {
+
+            out.println(string);
+            out.flush();
+
+        }
+
+        private String read() {
+
+            try {
+                return in.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return "";
+        }
+
+        @Override
+        public String toString() {
+            return name;
         }
     }
 }
