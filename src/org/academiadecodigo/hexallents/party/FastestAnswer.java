@@ -25,27 +25,22 @@ public class FastestAnswer implements Game {
     public void load() {
         File document = new File("fastest-answers/FastestAnswers.txt");
         int numberOfFileLines = 88;
-/*
-        try {
-            BufferedReader in = new BufferedReader(new FileReader(document));
-            in.mark(10000);
-        } catch (IOException e) {
-            System.err.println("Error Accessing File");
-            e.printStackTrace();
-        }
-*/
+
         questions = new String[rounds];
         answers = new String[rounds];
 
-        List<Integer> list = new LinkedList<>();
+        List<Integer> usedQuestionIndex = new LinkedList<>();
 
         for ( int i = 0; i < rounds; i++) {
 
             int questionNumber = getQuestionNumber(numberOfFileLines);
 
-            while (list.contains(questionNumber)) {
+            while (usedQuestionIndex.contains(questionNumber)) {
                 questionNumber = getQuestionNumber(numberOfFileLines);
             }
+
+            usedQuestionIndex.add(questionNumber);
+
             try {
                 BufferedReader in = new BufferedReader(new FileReader(document));
                 questions[i] = getQuestion(questionNumber, in);
@@ -53,15 +48,11 @@ public class FastestAnswer implements Game {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
-
         }
-
     }
 
     private String getQuestion(int questionIndex, BufferedReader in) throws IOException {
-        while (questionIndex >= 0){
+        while (questionIndex > 0){
             in.readLine();
             questionIndex--;
         }
