@@ -18,8 +18,9 @@ public class Server {
     private final int PORT_NUMBER = 7070;
     ExecutorService executor;
     private boolean gameRunning;
+    private String answer;
 
-    private Server() {
+    public Server() {
 
         try {
             serverSocket = new ServerSocket(PORT_NUMBER);
@@ -67,7 +68,7 @@ public class Server {
 
     }
 
-    private void sendAll(String string) {
+    public void sendAll(String string) {
 
         for (PlayerWorker p : playerWorkerSet) {
 
@@ -88,6 +89,14 @@ public class Server {
 
     public void setGameRunning(boolean gameRunning) {
         this.gameRunning = gameRunning;
+    }
+
+    public void setAnswer(String answer){
+        this.answer = answer;
+    }
+
+    public String getAnswer() {
+        return answer;
     }
 
     private class PlayerWorker implements Runnable {
@@ -136,11 +145,9 @@ public class Server {
 
             while (true) {
 
-                /*
-                userInput.append(read());
-                (String.valueOf(userInput));
+                userInput.append(name + ":" + read());
+                setAnswer(String.valueOf(userInput));
                 userInput.delete(0, userInput.length());
-                */
             }
         }
 
