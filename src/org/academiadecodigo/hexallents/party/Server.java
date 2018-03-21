@@ -49,7 +49,11 @@ public class Server {
         Game game = new FastestAnswer(players, score, server);
         game.setRounds(5);
         game.load();
-        game.start();
+        try {
+            game.start();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void listen() throws IOException {
@@ -147,6 +151,7 @@ public class Server {
 
                 userInput.append(name + ":" + read());
                 setAnswer(String.valueOf(userInput));
+                //notify();
                 userInput.delete(0, userInput.length());
             }
         }

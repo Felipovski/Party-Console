@@ -79,12 +79,12 @@ public class FastestAnswer implements Game {
 
 
     @Override
-    public void start() {
+    public void start() throws InterruptedException {
 
         server.setGameRunning(true);
 
         for (int i = 0; i < questions.length; i++) {
-            server.sendAll("First question: " + questions[i]);
+            server.sendAll("Question " + i + ": " + questions[i]);
 
             while (true) {
 
@@ -92,19 +92,19 @@ public class FastestAnswer implements Game {
                 String playerAnswer;
                 String[] nameAnswer;
 
-                // criar um metodo bloqueante?
-                // wait() e notify quando houver resposta
-
+//                wait();
+                if (server.getAnswer() == null) continue;
                 nameAnswer = server.getAnswer().split( ":");
                 name = nameAnswer[0];
                 playerAnswer = nameAnswer[1];
 
                 if (answers[i].equals(playerAnswer)) {
-                    score.changePoints("nome", 10);
+                    score.changePoints(name, 10);
+                    System.out.println("GOT SOME POINTS");
                     break;
                 }
 
-                score.changePoints("name", -5);
+                score.changePoints(name, -5);
             }
 
         }

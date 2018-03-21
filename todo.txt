@@ -1,0 +1,5 @@
+timer
+mensagem de inicio de jogo:
+
+
+timer 

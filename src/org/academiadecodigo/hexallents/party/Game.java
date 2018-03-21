@@ -4,7 +4,7 @@ public interface Game {
 
     void load();
 
-    void start();
+    void start() throws InterruptedException;
 
     void setRounds(int rounds);
 }
