@@ -12,6 +12,7 @@ public class FastestAnswer implements Game {
     private int rounds;
     private String[] questions;
     private String[] answers;
+
     public FastestAnswer(List<String> players, Score score, Server server) {
         this.score = score;
         this.server = server;
@@ -30,7 +31,7 @@ public class FastestAnswer implements Game {
 
         List<Integer> usedQuestionIndex = new LinkedList<>();
 
-        for ( int i = 0; i < rounds; i++) {
+        for (int i = 0; i < rounds; i++) {
 
             System.out.printf("i: " + i);
             int questionNumber = getQuestionNumber(numberOfFileLines);
@@ -50,18 +51,18 @@ public class FastestAnswer implements Game {
                 e.printStackTrace();
             }
 
-            for(String s : questions){
+            for (String s : questions) {
                 System.out.println(s);
             }
 
-            for (String s : answers){
+            for (String s : answers) {
                 System.out.println(s);
             }
         }
     }
 
     private String getQuestion(int questionIndex, BufferedReader in) throws IOException {
-        while (questionIndex > 0){
+        while (questionIndex > 0) {
             in.readLine();
             questionIndex--;
         }
@@ -82,22 +83,22 @@ public class FastestAnswer implements Game {
 
         server.setGameRunning(true);
 
-        for (int i = 0; i < questions.length ; i++) {
+        for (int i = 0; i < questions.length; i++) {
             server.sendAll("First question: " + questions[i]);
 
-            while (true){
+            while (true) {
 
-        String name = "";
-        String playerAnswer;
-        String[] nameAnswer;
+                String name = "";
+                String playerAnswer;
+                String[] nameAnswer;
 
                 // criar um metodo bloqueante?
 
-                nameAnswer = server.getAnswer().split( ":");
+                nameAnswer = server.getAnswer().split(":");
                 name = nameAnswer[0];
                 playerAnswer = nameAnswer[1];
 
-                if (answers[i].equals(playerAnswer)){
+                if (answers[i].equals(playerAnswer)) {
                     score.changePoints("nome", 10);
                     break;
                 }
