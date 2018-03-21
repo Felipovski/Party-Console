@@ -93,8 +93,9 @@ public class FastestAnswer implements Game {
                 String[] nameAnswer;
 
                 // criar um metodo bloqueante?
+                // wait() e notify quando houver resposta
 
-                nameAnswer = server.getAnswer().split(":");
+                nameAnswer = server.getAnswer().split( ":");
                 name = nameAnswer[0];
                 playerAnswer = nameAnswer[1];
 
