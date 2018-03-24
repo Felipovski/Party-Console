@@ -1,4 +1,4 @@
-package org.academiadecodigo.hexallents.party;
+package org.academiadecodigo.hexallents.party.Server;
 
 public interface Game {
 

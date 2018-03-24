@@ -1,4 +1,4 @@
-package org.academiadecodigo.hexallents.party;
+package org.academiadecodigo.hexallents.party.Server;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,7 +14,7 @@ public class Test {
 
 
 
-        FastestAnswer fastestAnswer = new FastestAnswer(player, score, server);
+        FastestAnswer fastestAnswer = new FastestAnswer(score, server);
 
         fastestAnswer.load();
     }
