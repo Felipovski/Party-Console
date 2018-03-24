@@ -142,7 +142,7 @@ public class Server {
             while (true) {
 
                 input.append(name + ": " + read());
-                sendAll(String.valueOf(input));
+                sendAll(input.toString());
                 input.delete(0, input.length());
 
                 if (gameRunning) {

@@ -80,7 +80,7 @@ public class FastestAnswer implements Game {
         for (int i = 0; i < questions.length; i++) {
             server.sendAll(score.toString());
 
-            server.sendAll("\nQuestion " + i + ": " + questions[i]);
+            server.sendAll("\nQuestion " + i+1 + ": " + questions[i]);
 
             while (true) {
                 Thread.sleep(1000);
