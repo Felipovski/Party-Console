@@ -47,7 +47,7 @@ public class Server {
         List<String> players = server.getPlayerNames();
 
         Score score = new Score(players);
-        Game game = new FastestAnswer(players, score, server);
+        Game game = new FastestAnswer(score, server);
         game.setRounds(5);
         game.load();
         try {
@@ -75,9 +75,16 @@ public class Server {
             listen();
         }
 
+    }
 
+    public void endGame(){
 
-
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        executor.shutdown();
     }
 
     public void sendAll(String string) {
@@ -146,7 +153,7 @@ public class Server {
                 input.delete(0, input.length());
 
                 if (gameRunning) {
-                    System.out.println("ITS RUNNING MAN");
+                    sendAll("PRESS START TO BEGIN ANSWERING");
                     inGame();
                 }
             }

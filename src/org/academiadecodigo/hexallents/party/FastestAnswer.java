@@ -8,15 +8,13 @@ public class FastestAnswer implements Game {
 
     private Score score;
     private Server server;
-    private List<String> players;
     private int rounds;
     private String[] questions;
     private String[] answers;
 
-    public FastestAnswer(List<String> players, Score score, Server server) {
+    public FastestAnswer(Score score, Server server) {
         this.score = score;
         this.server = server;
-        this.players = players;
         rounds = 5;
     }
 
@@ -77,13 +75,18 @@ public class FastestAnswer implements Game {
         server.setGameRunning(true);
         StringBuilder answer = new StringBuilder();
 
+        /*if(!server.playersReady()){
+            start();
+            return;
+        }*/
+
         for (int i = 0; i < questions.length; i++) {
             server.sendAll(score.toString());
 
-            server.sendAll("\nQuestion " + i+1 + ": " + questions[i]);
+            server.sendAll("\nQuestion " + (i+1) + ": " + questions[i]);
 
             while (true) {
-                Thread.sleep(1000);
+                //Thread.sleep(1000);
 
                 answer.append(server.getAnswer());
 
@@ -101,22 +104,18 @@ public class FastestAnswer implements Game {
                 if (answers[i].equals(answer.substring(answer.indexOf(":")+1, answer.length()))) {
                     score.changePoints(answer.substring(0, answer.indexOf(":")), 10);
                     answer.delete(0, answer.length());
-                    if(i == questions.length-1){
-                        server.sendAll("Bye, sucker");
-                        System.exit(0);
-                    }
                     break;
-                }
+                    }
 
                 score.changePoints(answer.substring(0,answer.indexOf(":")), -5);
                 answer.delete(0, answer.length());
 
-
             }
 
         }
+        server.sendAll("Bye, sucker");
+        server.endGame();
     }
-
 
 
     @Override
