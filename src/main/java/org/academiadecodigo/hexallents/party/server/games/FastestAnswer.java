@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class FastestAnswer extends AbstractGame implements Game {
+public class FastestAnswer extends AbstractGame{
 
     private String[] questions;
     private String[] answers;
@@ -138,8 +138,4 @@ public class FastestAnswer extends AbstractGame implements Game {
         }
     }
 
-    @Override
-    public void setRounds(int rounds) {
-        this.rounds = rounds;
-    }
 }

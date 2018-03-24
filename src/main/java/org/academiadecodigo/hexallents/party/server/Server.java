@@ -55,7 +55,6 @@ public class Server {
         Game game = new FastestAnswer(score, server, ROUNDS );
         Game game2 = new CardsAgainstHumanity(score, server, ROUNDS);
 
-        game.setRounds(5);
         game.load();
         try {
             game.start();
