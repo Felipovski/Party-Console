@@ -18,7 +18,7 @@ public class Server {
     private final int PORT_NUMBER = 7070;
     private ExecutorService executor;
     private boolean gameRunning;
-    private String answer;
+    private String answer = "";
 
     public Server() {
 
@@ -104,11 +104,14 @@ public class Server {
     }
 
     public void setAnswer(String answer){
+        System.out.println("NO SET: " + answer);
         this.answer = answer;
     }
 
     public String getAnswer() {
-        return answer;
+        String sent = answer;
+        answer = "";
+        return sent;
     }
 
     private class PlayerWorker implements Runnable {
@@ -153,11 +156,11 @@ public class Server {
 
             StringBuilder userInput = new StringBuilder();
             System.out.println("INGAME");
-            int i = 0;
+
             while (true) {
-                System.out.println(i++);
                 userInput.append(name + ":" + read());
-                setAnswer(String.valueOf(userInput));
+                System.out.println("NO INGAME: " + userInput.toString());
+                setAnswer(userInput.toString());
                 //notify();
                 userInput.delete(0, userInput.length());
             }

@@ -82,21 +82,29 @@ public class FastestAnswer implements Game {
     public void start() throws InterruptedException {
 
         server.setGameRunning(true);
-
         for (int i = 0; i < questions.length; i++) {
             server.sendAll("Question " + i + ": " + questions[i]);
+            System.out.println(questions[i]);
+            System.out.println(answers[i]);
 
             while (true) {
+                String answer = server.getAnswer();
+                Thread.sleep(1000);
+                System.out.println(answer);
 
                 String name = "";
                 String playerAnswer;
                 String[] nameAnswer;
 
 //                wait();
-                if (server.getAnswer() == null) continue;
-                nameAnswer = server.getAnswer().split( ":");
+                if (answer.equals("")){
+                    continue;
+                }
+
+                nameAnswer = answer.split( ":");
                 name = nameAnswer[0];
                 playerAnswer = nameAnswer[1];
+
 
                 if (answers[i].equals(playerAnswer)) {
                     score.changePoints(name, 10);
@@ -108,6 +116,7 @@ public class FastestAnswer implements Game {
             }
 
         }
+        System.out.println("OUT OF GAME");
     }
 
     @Override
