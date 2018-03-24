@@ -80,17 +80,19 @@ public class CardsAgainstHumanity extends AbstractGame{
         return getCard(number, blackCardManager);
     }
 
-    private String getCard(int cardIndex, BufferedReader in){
+    private String getCard(int cardIndex, BufferedReader in) {
+
         try {
             while (cardIndex > 0) {
                 in.readLine();
                 cardIndex--;
             }
             return in.readLine();
-        } catch (IOException io ){
+        } catch (IOException io) {
             System.err.println("ERROR READING CARDS");
         }
 
+        return "";
     }
 
 }
