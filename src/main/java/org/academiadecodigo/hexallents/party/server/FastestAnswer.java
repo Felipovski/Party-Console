@@ -3,6 +3,8 @@ package org.academiadecodigo.hexallents.party.server;
 import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class FastestAnswer implements Game {
 
@@ -11,11 +13,14 @@ public class FastestAnswer implements Game {
     private int rounds;
     private String[] questions;
     private String[] answers;
+    private Timer timer;
+    private boolean timeOut;
 
     public FastestAnswer(Score score, Server server) {
         this.score = score;
         this.server = server;
         rounds = 5;
+        timer = new Timer();
     }
 
 
@@ -72,9 +77,9 @@ public class FastestAnswer implements Game {
 
     @Override
     public void start() throws InterruptedException {
-
+        System.out.println("entrou no start()");
         server.setGameRunning(true);
-        StringBuilder answer = new StringBuilder();
+
 
         /*if(!server.playersReady()){
             start();
@@ -85,39 +90,53 @@ public class FastestAnswer implements Game {
             server.sendAll(score.toString());
 
             server.sendAll("\nQuestion " + (i+1) + ": " + questions[i]);
+            System.out.println("antes do timertask");
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
 
-            while (true) {
-                //Thread.sleep(1000);
-
-                answer.append(server.getAnswer());
-
-                System.out.println(answer.toString());
-
-
-//                wait();
-                if (answer.toString().equals("")){
-                    answer.delete(0, answer.length());
-                    continue;
+                    timeOut = true;
+                    System.out.println("timeOut: " + timeOut);
                 }
-                System.out.println(answer.substring(answer.indexOf(":")+1, answer.length()));
-                System.out.println(answer.substring(0,answer.indexOf(":")));
-
-                if (answers[i].equals(answer.substring(answer.indexOf(":")+1, answer.length()))) {
-                    score.changePoints(answer.substring(0, answer.indexOf(":")), 10);
-                    answer.delete(0, answer.length());
-                    break;
-                    }
-
-                score.changePoints(answer.substring(0,answer.indexOf(":")), -5);
-                answer.delete(0, answer.length());
-
-            }
+            };
+            timer.schedule(timerTask, 2000);
+            System.out.println("depois do timer.schedule");
+            answersHandler(i);
 
         }
         server.sendAll("Bye, sucker");
         server.endGame();
     }
 
+    private void answersHandler(int index){
+        StringBuilder answer = new StringBuilder();
+        while (true) {
+            //Thread.sleep(1000);
+
+            answer.append(server.getAnswer());
+
+            System.out.println(answer.toString());
+
+
+//                wait();
+            if (answer.toString().equals("")){
+                answer.delete(0, answer.length());
+                continue;
+            }
+            System.out.println(answer.substring(answer.indexOf(":")+1, answer.length()));
+            System.out.println(answer.substring(0,answer.indexOf(":")));
+
+            if (answers[index].equals(answer.substring(answer.indexOf(":")+1, answer.length())) || timeOut) {
+                score.changePoints(answer.substring(0, answer.indexOf(":")), 10);
+                answer.delete(0, answer.length());
+                break;
+            }
+
+            score.changePoints(answer.substring(0,answer.indexOf(":")), -5);
+            answer.delete(0, answer.length());
+
+        }
+    }
 
     @Override
     public void setRounds(int rounds) {
