@@ -18,7 +18,7 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Set<PlayerWorker> playerWorkerSet;
-    private static final int MAX_PLAYERS = 2;
+    private static final int MAX_PLAYERS = 1;
     private final int PORT_NUMBER = 7070;
     public static final int ROUNDS = 6;
     private ExecutorService executor;

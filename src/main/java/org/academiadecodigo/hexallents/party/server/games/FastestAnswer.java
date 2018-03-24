@@ -89,20 +89,21 @@ public class FastestAnswer extends AbstractGame implements Game {
         for (int i = 0; i < questions.length; i++) {
             server.sendAll(score.toString());
 
+
             server.sendAll("\nQuestion " + (i+1) + ": " + questions[i]);
-            System.out.println("antes do timertask");
+
             TimerTask timerTask = new TimerTask() {
+
                 @Override
                 public void run() {
 
                     timeOut = true;
-                    System.out.println("timeOut: " + timeOut);
                 }
             };
-            timer.schedule(timerTask, 2000);
-            System.out.println("depois do timer.schedule");
+            timer.schedule(timerTask, 10000);
+            System.out.println("timeout fora do timertask: " + timeOut);
             answersHandler(i);
-
+            timeOut = false;
         }
         server.sendAll("Bye, sucker");
         server.endGame();
@@ -111,13 +112,19 @@ public class FastestAnswer extends AbstractGame implements Game {
     private void answersHandler(int index){
         StringBuilder answer = new StringBuilder();
         while (true) {
-            //Thread.sleep(1000);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             answer.append(server.getAnswer());
 
             System.out.println(answer.toString());
 
-
+            if(timeOut) {
+                return;
+            }
 //                wait();
             if (answer.toString().equals("")){
                 answer.delete(0, answer.length());
@@ -126,9 +133,13 @@ public class FastestAnswer extends AbstractGame implements Game {
             System.out.println(answer.substring(answer.indexOf(":")+1, answer.length()));
             System.out.println(answer.substring(0,answer.indexOf(":")));
 
-            if (answers[index].equals(answer.substring(answer.indexOf(":")+1, answer.length())) || timeOut) {
+
+
+
+            if (answers[index].equals(answer.substring(answer.indexOf(":")+1, answer.length()))) {
                 score.changePoints(answer.substring(0, answer.indexOf(":")), 10);
                 answer.delete(0, answer.length());
+                timer.cancel();
                 break;
             }
 
@@ -142,4 +153,5 @@ public class FastestAnswer extends AbstractGame implements Game {
     public void setRounds(int rounds) {
         this.rounds = rounds;
     }
+    
 }
