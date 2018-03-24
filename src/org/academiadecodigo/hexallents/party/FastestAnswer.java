@@ -101,11 +101,17 @@ public class FastestAnswer implements Game {
                 if (answers[i].equals(answer.substring(answer.indexOf(":")+1, answer.length()))) {
                     score.changePoints(answer.substring(0, answer.indexOf(":")), 10);
                     answer.delete(0, answer.length());
+                    if(i == questions.length-1){
+                        server.sendAll("Bye, sucker");
+                        System.exit(0);
+                    }
                     break;
                 }
 
                 score.changePoints(answer.substring(0,answer.indexOf(":")), -5);
                 answer.delete(0, answer.length());
+
+
             }
 
         }
