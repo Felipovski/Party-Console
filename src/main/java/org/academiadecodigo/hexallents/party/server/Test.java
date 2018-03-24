@@ -1,5 +1,7 @@
 package org.academiadecodigo.hexallents.party.server;
 
+import org.academiadecodigo.hexallents.party.server.games.FastestAnswer;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,9 +16,10 @@ public class Test {
 
 
 
-        FastestAnswer fastestAnswer = new FastestAnswer(score, server);
+        FastestAnswer fastestAnswer = new FastestAnswer(score, server, Server.ROUNDS);
 
         fastestAnswer.load();
+
     }
 
 }
