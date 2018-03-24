@@ -21,7 +21,8 @@ public class FastestAnswer implements Game {
 
     @Override
     public void load() {
-        File document = new File("/resources/fastest-answer/FastestAnswers.txt");
+        File document = new File("src/main/resources/fastest-answer/fastestAnswers.txt");
+
         int numberOfFileLines = 88;
 
         questions = new String[rounds];
