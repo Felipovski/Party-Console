@@ -14,9 +14,9 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Set<PlayerWorker> playerWorkerSet;
-    private static final int MAX_PLAYERS = 4;
+    private static final int MAX_PLAYERS = 1;
     private final int PORT_NUMBER = 7070;
-    ExecutorService executor;
+    private ExecutorService executor;
     private boolean gameRunning;
     private String answer;
 
@@ -45,6 +45,7 @@ public class Server {
         }
 
         List<String> players = server.getPlayerNames();
+
         Score score = new Score(players);
         Game game = new FastestAnswer(players, score, server);
         game.setRounds(5);
@@ -62,12 +63,19 @@ public class Server {
         PlayerWorker playerWorker = new PlayerWorker(socket);
 
         playerWorkerSet.add(playerWorker);
+
+        
+        playerWorker.send("What is your name?");
+        String name = playerWorker.read();
+        playerWorker.setName(name);
         executor.submit(playerWorker);
 
         if (playerWorkerSet.size() < MAX_PLAYERS) {
             sendAll("There are " + playerWorkerSet.size() + " players. Wait for more players");
             listen();
         }
+
+
 
 
     }
@@ -124,11 +132,8 @@ public class Server {
 
         @Override
         public void run() {
-
-            send("What is your name?");
-            name = read();
+            
             StringBuilder input = new StringBuilder();
-
 
             //Before game starts
             while (true) {
@@ -138,6 +143,7 @@ public class Server {
                 input.delete(0, input.length());
 
                 if (gameRunning) {
+                    System.out.println("ITS RUNNING MAN");
                     inGame();
                 }
             }
@@ -146,9 +152,10 @@ public class Server {
         private void inGame() {
 
             StringBuilder userInput = new StringBuilder();
-
+            System.out.println("INGAME");
+            int i = 0;
             while (true) {
-
+                System.out.println(i++);
                 userInput.append(name + ":" + read());
                 setAnswer(String.valueOf(userInput));
                 //notify();
@@ -185,6 +192,10 @@ public class Server {
         @Override
         public String toString() {
             return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
     }
 }
