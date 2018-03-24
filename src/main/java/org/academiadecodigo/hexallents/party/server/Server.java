@@ -1,5 +1,9 @@
 package org.academiadecodigo.hexallents.party.server;
 
+import org.academiadecodigo.hexallents.party.server.games.CardsAgainstHumanity;
+import org.academiadecodigo.hexallents.party.server.games.FastestAnswer;
+import org.academiadecodigo.hexallents.party.server.games.Game;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,8 +18,9 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Set<PlayerWorker> playerWorkerSet;
-    private static final int MAX_PLAYERS = 1;
-    private final int PORT_NUMBER = 9000;
+    private static final int MAX_PLAYERS = 2;
+    private final int PORT_NUMBER = 7070;
+    public static final int ROUNDS = 6;
     private ExecutorService executor;
     private boolean gameRunning;
     private String answer = "";
@@ -47,11 +52,14 @@ public class Server {
         List<String> players = server.getPlayerNames();
 
         Score score = new Score(players);
-        Game game = new FastestAnswer(score, server);
+        Game game = new FastestAnswer(score, server, ROUNDS );
+        Game game2 = new CardsAgainstHumanity(score, server, ROUNDS);
+
         game.setRounds(5);
         game.load();
         try {
             game.start();
+            game2.start();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

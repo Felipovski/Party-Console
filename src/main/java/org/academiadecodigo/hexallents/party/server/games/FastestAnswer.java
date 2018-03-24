@@ -1,4 +1,7 @@
-package org.academiadecodigo.hexallents.party.server;
+package org.academiadecodigo.hexallents.party.server.games;
+
+import org.academiadecodigo.hexallents.party.server.Score;
+import org.academiadecodigo.hexallents.party.server.Server;
 
 import java.io.*;
 import java.util.LinkedList;
@@ -6,20 +9,15 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class FastestAnswer implements Game {
+public class FastestAnswer extends AbstractGame implements Game {
 
-    private Score score;
-    private Server server;
-    private int rounds;
     private String[] questions;
     private String[] answers;
     private Timer timer;
     private boolean timeOut;
 
-    public FastestAnswer(Score score, Server server) {
-        this.score = score;
-        this.server = server;
-        rounds = 5;
+    public FastestAnswer(Score score, Server server, int rounds) {
+        super(score, server, rounds);
         timer = new Timer();
     }
 
@@ -54,7 +52,9 @@ public class FastestAnswer implements Game {
                 e.printStackTrace();
             }
 
-
+        }
+        for (String s : answers){
+            System.out.println(s);
         }
     }
 
