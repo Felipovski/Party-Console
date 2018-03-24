@@ -33,7 +33,6 @@ public class FastestAnswer implements Game {
 
         for (int i = 0; i < rounds; i++) {
 
-            System.out.printf("i: " + i);
             int questionNumber = getQuestionNumber(numberOfFileLines);
 
             while (usedQuestionIndex.contains(questionNumber)) {
@@ -51,13 +50,7 @@ public class FastestAnswer implements Game {
                 e.printStackTrace();
             }
 
-            for (String s : questions) {
-                System.out.println(s);
-            }
 
-            for (String s : answers) {
-                System.out.println(s);
-            }
         }
     }
 
@@ -82,42 +75,43 @@ public class FastestAnswer implements Game {
     public void start() throws InterruptedException {
 
         server.setGameRunning(true);
+        StringBuilder answer = new StringBuilder();
+
         for (int i = 0; i < questions.length; i++) {
-            server.sendAll("Question " + i + ": " + questions[i]);
-            System.out.println(questions[i]);
-            System.out.println(answers[i]);
+            server.sendAll(score.toString());
+
+            server.sendAll("\nQuestion " + i + ": " + questions[i]);
 
             while (true) {
-                String answer = server.getAnswer();
                 Thread.sleep(1000);
-                System.out.println(answer);
 
-                String name = "";
-                String playerAnswer;
-                String[] nameAnswer;
+                answer.append(server.getAnswer());
+
+                System.out.println(answer.toString());
+
 
 //                wait();
-                if (answer.equals("")){
+                if (answer.toString().equals("")){
+                    answer.delete(0, answer.length());
                     continue;
                 }
+                System.out.println(answer.substring(answer.indexOf(":")+1, answer.length()));
+                System.out.println(answer.substring(0,answer.indexOf(":")));
 
-                nameAnswer = answer.split( ":");
-                name = nameAnswer[0];
-                playerAnswer = nameAnswer[1];
-
-
-                if (answers[i].equals(playerAnswer)) {
-                    score.changePoints(name, 10);
-                    System.out.println("GOT SOME POINTS");
+                if (answers[i].equals(answer.substring(answer.indexOf(":")+1, answer.length()))) {
+                    score.changePoints(answer.substring(0, answer.indexOf(":")), 10);
+                    answer.delete(0, answer.length());
                     break;
                 }
 
-                score.changePoints(name, -5);
+                score.changePoints(answer.substring(0,answer.indexOf(":")), -5);
+                answer.delete(0, answer.length());
             }
 
         }
-        System.out.println("OUT OF GAME");
     }
+
+
 
     @Override
     public void setRounds(int rounds) {

@@ -14,7 +14,7 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Set<PlayerWorker> playerWorkerSet;
-    private static final int MAX_PLAYERS = 1;
+    private static final int MAX_PLAYERS = 2;
     private final int PORT_NUMBER = 7070;
     private ExecutorService executor;
     private boolean gameRunning;
