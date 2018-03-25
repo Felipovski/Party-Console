@@ -14,12 +14,10 @@ public class FastestAnswer extends AbstractGame{
 
     private String[] questions;
     private String[] answers;
-    private Timer timer;
-    private boolean timeOut;
+    private long time;
 
     public FastestAnswer(Score score, Server server, int rounds) {
         super(score, server, rounds);
-        timer = new Timer();
     }
 
     @Override
@@ -82,10 +80,6 @@ public class FastestAnswer extends AbstractGame{
         server.setGameRunning(true);
         server.sendAll(Messages.clearScreen().toString());
 
-        /*if(!server.playersReady()){
-            start();
-            return;
-        }*/
 
         for (int i = 0; i < questions.length; i++) {
 
@@ -94,21 +88,9 @@ public class FastestAnswer extends AbstractGame{
             server.sendAll("<---------------CURRENT SCORE--------------->\n\n" + score.toString());
             server.sendAll("\nQuestion " + (i+1) + ": " + questions[i]);
 
-            TimerTask timerTask = new TimerTask() {
-
-                @Override
-                public void run() {
-
-                    timeOut = true;
-                }
-            };
-
-            timer.schedule(timerTask, 20000);
-            System.out.println("timeout fora do timertask: " + timeOut);
-
+            time = System.currentTimeMillis();
             //Handles the answers from player
             answersHandler(i);
-            timeOut = false;
         }
 
         server.sendAll(Messages.clearScreen().toString());
@@ -131,12 +113,12 @@ public class FastestAnswer extends AbstractGame{
 
             System.out.println(answer.toString());
 
-            if(timeOut) {
+            if(System.currentTimeMillis()-time >= 20000) {
                 server.sendAll("Time's up!!!");
                 return;
             }
             System.out.println(answer.toString() + "HHHHEYEYEYEY");
-//                wait();
+
             if (answer.toString().equals("")){
                 answer.delete(0, answer.length());
                 continue;
@@ -153,7 +135,6 @@ public class FastestAnswer extends AbstractGame{
             if (answers[index].equals(answer.substring(answer.indexOf(":")+1, answer.length()))) {
                 score.changeScore(answer.substring(0, answer.indexOf(":")), 10);
                 answer.delete(0, answer.length());
-                timer.purge();
                 break;
             }
 
