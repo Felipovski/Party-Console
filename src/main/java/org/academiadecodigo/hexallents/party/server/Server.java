@@ -11,6 +11,9 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+    /**
+     * Creates a Server
+     */
 public class Server {
 
     private ServerSocket serverSocket;
@@ -21,6 +24,7 @@ public class Server {
     private ExecutorService executor;
     private boolean gameRunning;
     private String answer = "";
+
 
     public Server() {
 
@@ -35,6 +39,11 @@ public class Server {
         playerWorkerMap = new HashMap<>();
     }
 
+    /**
+     * Creates Player Workers
+     *
+     * @throws IOException
+     */
     public void listen() throws IOException {
 
         Socket socket = serverSocket.accept();
@@ -54,6 +63,9 @@ public class Server {
 
     }
 
+    /**
+     * Ends Server Socket and Game
+     */
     public void endGame() {
         try {
             serverSocket.close();
@@ -77,7 +89,10 @@ public class Server {
 
     }
 
-
+    /**
+     * Sends a message to all Player Workers
+     * @param string Message to send
+     */
     public void sendAll(String string) {
 
         for (PlayerWorker p : playerWorkerMap.values()) {
@@ -85,6 +100,7 @@ public class Server {
             p.send(string);
         }
     }
+
 
     public void sendMenuPrompt(MenuInputScanner menuInputScanner, String playerName) {
         String menuPrompt;
@@ -96,6 +112,7 @@ public class Server {
         setAnswer(menuPrompt);
     }
 
+
     public void sendStringPrompt(StringInputScanner stringInputScanner, String playerName) {
 
         PlayerWorker p = playerWorkerMap.get(playerName);
@@ -106,7 +123,11 @@ public class Server {
 
     }
 
-
+    /**
+     * Gets player's names
+     *
+     * @return List of Players Names
+     */
     public List<String> getPlayerNames() {
 
         ArrayList<String> list = new ArrayList<>();
@@ -120,10 +141,12 @@ public class Server {
         this.gameRunning = gameRunning;
     }
 
+
     public void setAnswer(String answer) {
         System.out.println("NO SET: " + answer);
         this.answer = answer;
     }
+
 
     public String getAnswer() {
         String sent = answer;

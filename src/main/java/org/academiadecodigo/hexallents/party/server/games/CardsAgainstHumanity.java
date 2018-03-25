@@ -49,8 +49,6 @@ public class CardsAgainstHumanity extends AbstractGame{
     @Override
     public void start() throws InterruptedException {
 
-
-
     }
 
 

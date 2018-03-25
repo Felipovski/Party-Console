@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Class Fastest Answer game
+ */
 public class FastestAnswer extends AbstractGame{
 
     private String[] questions;
@@ -20,6 +23,9 @@ public class FastestAnswer extends AbstractGame{
         super(score, server, rounds);
     }
 
+    /**
+     * Loads file data with question and answers
+     */
     @Override
     public void load() {
         File document = new File("src/main/resources/fastest-answer/fastestAnswers.txt");
@@ -73,6 +79,11 @@ public class FastestAnswer extends AbstractGame{
     }
 
 
+    /**
+     * Starts the game
+     *
+     * @throws InterruptedException
+     */
     @Override
     public void start() throws InterruptedException {
 
