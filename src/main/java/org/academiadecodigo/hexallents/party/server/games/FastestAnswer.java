@@ -80,7 +80,6 @@ public class FastestAnswer extends AbstractGame{
 
         server.sendAll(Messages.fastestAnswerInitialMessage().toString());
         server.setGameRunning(true);
-
         server.sendAll(Messages.clearScreen().toString());
 
         /*if(!server.playersReady()){

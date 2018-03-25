@@ -46,7 +46,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.academiadecodigo.hexallents.party.server.Server</mainClass>
+                            <mainClass>org.academiadecodigo.hexallents.party.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

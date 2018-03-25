@@ -3,10 +3,6 @@ package org.academiadecodigo.hexallents.party.server;
 import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
 import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
-import org.academiadecodigo.hexallents.party.messages.Messages;
-import org.academiadecodigo.hexallents.party.server.games.CardsAgainstHumanity;
-import org.academiadecodigo.hexallents.party.server.games.FastestAnswer;
-import org.academiadecodigo.hexallents.party.server.games.Game;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -19,7 +15,7 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Map<String, PlayerWorker> playerWorkerMap;
-    private static final int MAX_PLAYERS = 2;
+    private static final int MAX_PLAYERS = 1;
     private final int PORT_NUMBER = 7070;
     public static final int ROUNDS = 6;
     private ExecutorService executor;
@@ -39,36 +35,7 @@ public class Server {
         playerWorkerMap = new HashMap<>();
     }
 
-
-    public static void main(String[] args) {
-
-        Server server = new Server();
-
-        try {
-            server.listen();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        List<String> players = server.getPlayerNames();
-
-        Score score = new Score(players);
-        Game game = new FastestAnswer(score, server, ROUNDS );
-        Game game2 = new CardsAgainstHumanity(score, server, ROUNDS);
-
-        server.sendAll(Messages.clearScreen().toString());
-        Messages.gameMessage();
-        game.load();
-        server.sendAll(Messages.clearScreen().toString());
-        try {
-            game.start();
-            game2.start();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void listen() throws IOException {
+    public void listen() throws IOException {
 
         Socket socket = serverSocket.accept();
         PlayerWorker playerWorker = new PlayerWorker(socket);
@@ -87,8 +54,7 @@ public class Server {
 
     }
 
-    public void endGame(){
-
+    public void endGame() {
         try {
             serverSocket.close();
         } catch (IOException e) {
@@ -96,6 +62,21 @@ public class Server {
         }
         executor.shutdown();
     }
+
+    private void makeThreadsWait() {
+        synchronized (this) {
+            while (!gameRunning) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            notifyAll();
+        }
+
+    }
+
 
     public void sendAll(String string) {
 
@@ -139,7 +120,7 @@ public class Server {
         this.gameRunning = gameRunning;
     }
 
-    public void setAnswer(String answer){
+    public void setAnswer(String answer) {
         System.out.println("NO SET: " + answer);
         this.answer = answer;
     }
@@ -173,22 +154,9 @@ public class Server {
 
         @Override
         public void run() {
-            
-            StringBuilder input = new StringBuilder();
-
-            //Before game starts
-            while (true) {
-                System.out.println("CHEGEI AQUIAQUI");
-/*
-                input.append(name + ": " + read());
-                sendAll(input.toString());
-                input.delete(0, input.length());
-*/
-                if (gameRunning) {
-                    System.out.println("GAME STARTED");
-                    inGame();
-                }
-            }
+            makeThreadsWait();
+            System.out.println("GAME STARTED");
+            inGame();
         }
 
         private void inGame() {
@@ -230,21 +198,19 @@ public class Server {
         }
 
         /**
-         *
          * @param stringInputScanner
          * @return the string input from the user
          */
 
-        public String useStringPrompt(StringInputScanner stringInputScanner){
+        public String useStringPrompt(StringInputScanner stringInputScanner) {
             return name + ": " + prompt.getUserInput(stringInputScanner);
         }
 
         /**
-         *
          * @param menuInputScanner
          * @return the int which corresponds to the chosen option
          */
-        public String useMenuPrompt(MenuInputScanner menuInputScanner){
+        public String useMenuPrompt(MenuInputScanner menuInputScanner) {
             return name + ": " + prompt.getUserInput(menuInputScanner);
         }
 

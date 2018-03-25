@@ -26,7 +26,7 @@ public class Messages {
                         "|__/      \\_______/|__/         \\___/   \\____  $$ \\____/\\_/ \\______/  \\______/ |__/  |__/|_______/  \\______/ |__/ \\_______/\n" +
                         "                                        /$$  | $$                                                                          \n" +
                         "                                       |  $$$$$$/                                                                          \n" +
-                        "                                        \\______/                                                                           \n"
+                        "                                        \\______/                                                                           \n\n\n\n\n"
         );
     }
 
@@ -34,7 +34,7 @@ public class Messages {
 
         StringBuilder clear = new StringBuilder();
         return clear.append(
-                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
         );
     }
 
