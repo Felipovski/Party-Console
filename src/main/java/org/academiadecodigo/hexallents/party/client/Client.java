@@ -10,6 +10,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
+/**
+ * Client for the game
+ */
 public class Client {
 
     private Socket socket;
@@ -49,11 +52,6 @@ public class Client {
 
     }
 
-    /**
-     * Reads players messages
-     *
-     * @return
-     */
     private String answerReader() {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
