@@ -21,7 +21,6 @@ public class FastestAnswer extends AbstractGame{
         timer = new Timer();
     }
 
-
     @Override
     public void load() {
         File document = new File("src/main/resources/fastest-answer/fastestAnswers.txt");

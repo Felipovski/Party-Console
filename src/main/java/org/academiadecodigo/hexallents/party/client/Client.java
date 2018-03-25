@@ -9,6 +9,7 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/
 
 public class Client {
 
@@ -20,6 +21,7 @@ public class Client {
 
     /**
      * Asks host ip address and creates socket connection
+     *
      * @throws IOException
      */
     public void chat() throws IOException {
@@ -48,6 +50,11 @@ public class Client {
 
     }
 
+    /**
+     * Reads players messages
+     *
+     * @return
+     */
     private String answerReader() {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
