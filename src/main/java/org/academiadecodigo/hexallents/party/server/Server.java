@@ -3,10 +3,6 @@ package org.academiadecodigo.hexallents.party.server;
 import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
 import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
-import org.academiadecodigo.hexallents.party.messages.Messages;
-import org.academiadecodigo.hexallents.party.server.games.CardsAgainstHumanity;
-import org.academiadecodigo.hexallents.party.server.games.FastestAnswer;
-import org.academiadecodigo.hexallents.party.server.games.Game;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -19,7 +15,7 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Map<String, PlayerWorker> playerWorkerMap;
-    private static final int MAX_PLAYERS = 2;
+    private static final int MAX_PLAYERS = 1;
     private final int PORT_NUMBER = 7070;
     public static final int ROUNDS = 6;
     private ExecutorService executor;
@@ -39,36 +35,7 @@ public class Server {
         playerWorkerMap = new HashMap<>();
     }
 
-
-    public static void main(String[] args) {
-
-        Server server = new Server();
-
-        try {
-            server.listen();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        List<String> players = server.getPlayerNames();
-
-        Score score = new Score(players);
-        Game game = new FastestAnswer(score, server, ROUNDS );
-        Game game2 = new CardsAgainstHumanity(score, server, ROUNDS);
-
-        server.sendAll(Messages.clearScreen().toString());
-        Messages.gameMessage();
-        game.load();
-        server.sendAll(Messages.clearScreen().toString());
-        try {
-            game.start();
-            game2.start();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void listen() throws IOException {
+    public void listen() throws IOException {
 
         Socket socket = serverSocket.accept();
         PlayerWorker playerWorker = new PlayerWorker(socket);
@@ -179,11 +146,7 @@ public class Server {
             //Before game starts
             while (true) {
                 System.out.println("CHEGEI AQUIAQUI");
-/*
-                input.append(name + ": " + read());
-                sendAll(input.toString());
-                input.delete(0, input.length());
-*/
+
                 if (gameRunning) {
                     System.out.println("GAME STARTED");
                     inGame();
