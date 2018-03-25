@@ -84,7 +84,7 @@ public class FastestAnswer extends AbstractGame implements Game {
 
         server.sendAll(Messages.fastestAnswerInitialMessage().toString());
         server.setGameRunning(true);
-        Thread.sleep(1000);
+
         server.sendAll(Messages.clearScreen().toString());
 
         /*if(!server.playersReady()){
@@ -122,21 +122,27 @@ public class FastestAnswer extends AbstractGame implements Game {
 
         StringBuilder answer = new StringBuilder();
         while (true) {
-
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             answer.append(server.getAnswer());
 
-            //System.out.println(answer.toString());
+            System.out.println(answer.toString());
 
-            if(timeOut) {
+            if (timeOut) {
                 return;
             }
 //                wait();
             if (answer.toString().equals("")){
+
                 answer.delete(0, answer.length());
                 continue;
             }
-/*            System.out.println(answer.substring(answer.indexOf(":")+1, answer.length()));
-            System.out.println(answer.substring(0,answer.indexOf(":")));*/
+            System.out.println("asfçjasdkfjlasjdflafasdjflasjflasjdflas");
+            System.out.println(answer.substring(answer.indexOf(":")+1, answer.length()));
+            System.out.println(answer.substring(0,answer.indexOf(":")));
 
             if (answers[index].equals(answer.substring(answer.indexOf(":")+1, answer.length()))) {
                 score.changePoints(answer.substring(0, answer.indexOf(":")), 10);
