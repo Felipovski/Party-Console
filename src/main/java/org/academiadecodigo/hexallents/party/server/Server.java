@@ -25,6 +25,7 @@ public class Server {
     private ExecutorService executor;
     private boolean gameRunning;
     private String answer = "";
+    private Game game;
 
     public Server() {
 
@@ -43,6 +44,10 @@ public class Server {
     public static void main(String[] args) {
 
         Server server = new Server();
+        List<String> players = server.getPlayerNames();
+        Score score = new Score(players);
+        Game game = new FastestAnswer(score, server, ROUNDS);
+        server.setGame(game);
 
         try {
             server.listen();
@@ -50,10 +55,6 @@ public class Server {
             e.printStackTrace();
         }
 
-        List<String> players = server.getPlayerNames();
-
-        Score score = new Score(players);
-        Game game = new FastestAnswer(score, server, ROUNDS );
         Game game2 = new CardsAgainstHumanity(score, server, ROUNDS);
 
         server.sendAll(Messages.clearScreen().toString());
@@ -87,14 +88,31 @@ public class Server {
 
     }
 
-    public void endGame(){
-
+    public void endGame() {
         try {
             serverSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
         executor.shutdown();
+    }
+
+    private void makeThreadsWait() {
+        synchronized (this) {
+            while (!gameRunning) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            notifyAll();
+        }
+
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     public void sendAll(String string) {
@@ -139,7 +157,7 @@ public class Server {
         this.gameRunning = gameRunning;
     }
 
-    public void setAnswer(String answer){
+    public void setAnswer(String answer) {
         System.out.println("NO SET: " + answer);
         this.answer = answer;
     }
@@ -173,22 +191,9 @@ public class Server {
 
         @Override
         public void run() {
-            
-            StringBuilder input = new StringBuilder();
-
-            //Before game starts
-            while (true) {
-                System.out.println("CHEGEI AQUIAQUI");
-/*
-                input.append(name + ": " + read());
-                sendAll(input.toString());
-                input.delete(0, input.length());
-*/
-                if (gameRunning) {
-                    System.out.println("GAME STARTED");
-                    inGame();
-                }
-            }
+            makeThreadsWait();
+            System.out.println("GAME STARTED");
+            inGame();
         }
 
         private void inGame() {
@@ -230,21 +235,19 @@ public class Server {
         }
 
         /**
-         *
          * @param stringInputScanner
          * @return the string input from the user
          */
 
-        public String useStringPrompt(StringInputScanner stringInputScanner){
+        public String useStringPrompt(StringInputScanner stringInputScanner) {
             return name + ": " + prompt.getUserInput(stringInputScanner);
         }
 
         /**
-         *
          * @param menuInputScanner
          * @return the int which corresponds to the chosen option
          */
-        public String useMenuPrompt(MenuInputScanner menuInputScanner){
+        public String useMenuPrompt(MenuInputScanner menuInputScanner) {
             return name + ": " + prompt.getUserInput(menuInputScanner);
         }
 
