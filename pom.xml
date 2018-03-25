@@ -10,9 +10,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.academiadecodigo</groupId>
+            <groupId>org.academiadecodigo.hexallents</groupId>
             <artifactId>prompt-view</artifactId>
-            <version>0.2-SNAPSHOT</version>
+            <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
