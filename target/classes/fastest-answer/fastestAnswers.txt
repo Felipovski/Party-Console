@@ -1,0 +1,88 @@
+What provides objects with the ability to hide their internal characteristics and behavior?
+encapsulation
+How do you call the ability of programming languages to present the same interface for differing underlying data types?
+polymorphism
+What provides an object with the ability to acquire the fields and methods of another class, called super class?
+inheritance
+Process of separating ideas from specific instances and thus, develop classes in terms of their own functionality, instead of their implementation details.
+abstraction
+What is JVM?
+java virtual machine
+What is JRE?
+java runtime environment
+What is JDK?
+java development kit
+A Java source file is compiled into what type of file?
+bytecode
+What keyword allows a variable/method to accessed, without the instantiation of the class it belongs to?
+static
+Which keyword prevents thread interference and memory consistency errors?
+synchronized
+Which keyword allows you to run a block of code, regardless of the result of a try/catch block?
+finally
+Which keyword allows you to skip a iteration?
+continue
+Which keyword do you use to make a class use an interface independently of its data type?
+implements
+Which keyword do you use to make a class inherit form another?
+extends
+Which keyword makes a variable immutable after its initialization?
+final
+Which keyword compares an object's class with a specific class?
+instanceof
+Which keyword is used to initiate an object?
+new
+What's called a class that encapsulates another class, adding functionality?
+wrapper
+What type of class is made up of a set of predefined constants?
+enum
+Which keyword makes a variable available to all classes?
+public
+Which keyword makes a variable available to classes in the same package or subclasses of its own?
+protected
+Which keyword makes a variable available only in its own class?
+private
+Which keyword makes a method stop, producing a value and resuming the code that invoked it?
+return
+Which keyword tells your program to execute a block of code once when a condition is evaluated to true?
+if
+Which keyword is used to define a method with no return type?
+void
+Which keyword executes a block of code as long as its condition is true?
+while
+Which keyword forces a variable to be written into memory?
+volatile
+Which keyword is used to define a variable that might initialize an exception?
+throws
+What do we call the automatic conversion that the Java compiler makes between the primitive types and their corresponding object wrapper classes?
+autoboxing
+What's called the definition of a subclass's method, so it becomes different from its super class?
+override
+What's called the definition of a method with the same name but different in parameters?
+overload
+What method is usually called when you invoke a new object?
+constructor
+What do we call to an execution of a program?
+process
+What do we call a single execution sequence within a process?
+thread
+What do we call when two threads are waiting endlessly for each other to complete?
+deadlock
+What do we call a collection with no duplicate elements?
+set
+What do we typically call an ordered collection?
+list
+What do we call a collection of keys and its respective values?
+map
+What method allows you to loop over a collection?
+iterator
+What method from Object class do we use to compare objects?
+equals
+What method from Object class do you use to produce 32-bit integer?
+hashcode
+Which container object holds a fixed number of values of a single type?
+array
+Which interface do you implement to establish an order between two objects?
+comparable
+What's the name of the program that runs on the JVM and gets rid of objects which are not being used by a Java application anymore?
+garbage collector

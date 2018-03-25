@@ -30,16 +30,6 @@ public class Score {
         }
     }
 
-    /**
-     * Get's player's points
-     *
-     * @param name player's name
-     * @return String of player's points
-     */
-    public String showPlayerPoints(String name){
-        return name + ": " +scores[players.indexOf(name)];
-    }
-
     @Override
     public String toString() {
         StringBuilder outputScore = new StringBuilder();

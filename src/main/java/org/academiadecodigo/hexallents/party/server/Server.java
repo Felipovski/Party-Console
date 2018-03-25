@@ -21,6 +21,7 @@ public class Server {
     private ExecutorService executor;
     private boolean gameRunning;
     private String answer = "";
+    int i = 0;
 
     public Server() {
 
@@ -64,8 +65,9 @@ public class Server {
     }
 
     private void makeThreadsWait() {
+
         synchronized (this) {
-            while (!(playerWorkerMap.size() < MAX_PLAYERS)) {
+            while (playerWorkerMap.size() < MAX_PLAYERS) {
                 try {
                     wait();
                 } catch (InterruptedException e) {
@@ -74,7 +76,6 @@ public class Server {
             }
             notifyAll();
         }
-
     }
 
 
@@ -120,7 +121,7 @@ public class Server {
         this.gameRunning = gameRunning;
     }
 
-    public void setAnswer(String answer) {
+    public synchronized void setAnswer(String answer) {
         System.out.println("NO SET: " + answer);
         this.answer = answer;
     }
