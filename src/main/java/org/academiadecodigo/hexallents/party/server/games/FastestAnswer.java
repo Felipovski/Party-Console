@@ -18,7 +18,7 @@ public class FastestAnswer extends AbstractGame{
 
     public FastestAnswer(Score score, Server server, int rounds) {
         super(score, server, rounds);
-        timer = new Timer();
+        timer=new Timer();
     }
 
 
@@ -101,7 +101,7 @@ public class FastestAnswer extends AbstractGame{
                 }
             };
 
-            timer.schedule(timerTask, 10000);
+            timer.schedule(timerTask, 20000);
             System.out.println("timeout fora do timertask: " + timeOut);
 
             //Handles the answers from player
@@ -121,30 +121,29 @@ public class FastestAnswer extends AbstractGame{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
             answer.append(server.getAnswer());
-
             System.out.println(answer.toString());
 
             if(timeOut) {
                 server.sendAll("Time's up!!!");
                 return;
             }
+            System.out.println(answer.toString() + "HHHHEYEYEYEY");
 //                wait();
             if (answer.toString().equals("")){
                 answer.delete(0, answer.length());
                 continue;
             }
+
+            System.out.println("NONONONONONONONO");
+
             System.out.println(answer.substring(answer.indexOf(":")+1, answer.length()));
             System.out.println(answer.substring(0,answer.indexOf(":")));
-
-
-
 
             if (answers[index].equals(answer.substring(answer.indexOf(":")+1, answer.length()))) {
                 score.changePoints(answer.substring(0, answer.indexOf(":")), 10);
                 answer.delete(0, answer.length());
-                timer.cancel();
+                timer.purge();
                 break;
             }
 

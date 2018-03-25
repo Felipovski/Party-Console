@@ -49,13 +49,13 @@ public class CardsAgainstHumanity extends AbstractGame{
     @Override
     public void start() throws InterruptedException {
 
+
+
     }
 
 
 
 
-
-    //Obtains a card by its type which is inferred by its maxNumber
     private String getWhiteCard() throws IOException {
 
         int number = (int) (Math.random()*NUMBER_OF_WHITECARDS);
