@@ -15,7 +15,7 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Map<String, PlayerWorker> playerWorkerMap;
-    private static final int MAX_PLAYERS = 1;
+    private static final int MAX_PLAYERS = 3;
     private final int PORT_NUMBER = 7070;
     public static final int ROUNDS = 6;
     private ExecutorService executor;
@@ -65,7 +65,7 @@ public class Server {
 
     private void makeThreadsWait() {
         synchronized (this) {
-            while (!gameRunning) {
+            while (!(playerWorkerMap.size() < MAX_PLAYERS)) {
                 try {
                     wait();
                 } catch (InterruptedException e) {
