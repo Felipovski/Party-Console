@@ -1,5 +1,6 @@
 package org.academiadecodigo.hexallents.party.server;
 
+import org.academiadecodigo.hexallents.party.messages.Messages;
 import org.academiadecodigo.hexallents.party.server.games.CardsAgainstHumanity;
 import org.academiadecodigo.hexallents.party.server.games.FastestAnswer;
 import org.academiadecodigo.hexallents.party.server.games.Game;
@@ -56,6 +57,7 @@ public class Server {
         Game game2 = new CardsAgainstHumanity(score, server, ROUNDS);
 
         game.setRounds(5);
+        Messages.gameMessage();
         game.load();
         try {
             game.start();

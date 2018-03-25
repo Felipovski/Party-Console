@@ -1,5 +1,6 @@
 package org.academiadecodigo.hexallents.party.server.games;
 
+import org.academiadecodigo.hexallents.party.messages.Messages;
 import org.academiadecodigo.hexallents.party.server.Score;
 import org.academiadecodigo.hexallents.party.server.Server;
 
@@ -53,6 +54,7 @@ public class FastestAnswer extends AbstractGame implements Game {
             }
 
         }
+
         for (String s : answers){
             System.out.println(s);
         }
@@ -77,9 +79,13 @@ public class FastestAnswer extends AbstractGame implements Game {
 
     @Override
     public void start() throws InterruptedException {
-        System.out.println("entrou no start()");
+
+        server.sendAll(Messages.clearScreen().toString());
+        server.sendAll(Messages.fastestAnswerInitialMessage().toString());
         server.setGameRunning(true);
 
+        Thread.sleep(2000);
+        server.sendAll(Messages.clearScreen().toString());
 
         /*if(!server.playersReady()){
             start();
@@ -87,9 +93,9 @@ public class FastestAnswer extends AbstractGame implements Game {
         }*/
 
         for (int i = 0; i < questions.length; i++) {
-            server.sendAll(score.toString());
 
-
+            server.sendAll(Messages.clearScreen().toString());
+            server.sendAll(Messages.fastestAnswerInitialMessage().toString());
             server.sendAll("\nQuestion " + (i+1) + ": " + questions[i]);
 
             TimerTask timerTask = new TimerTask() {
@@ -100,8 +106,7 @@ public class FastestAnswer extends AbstractGame implements Game {
                     timeOut = true;
                 }
             };
-            timer.schedule(timerTask, 10000);
-            System.out.println("timeout fora do timertask: " + timeOut);
+            timer.schedule(timerTask, 15000);
             answersHandler(i);
             timeOut = false;
         }
@@ -146,6 +151,8 @@ public class FastestAnswer extends AbstractGame implements Game {
             score.changePoints(answer.substring(0,answer.indexOf(":")), -5);
             answer.delete(0, answer.length());
 
+            server.sendAll(score.toString());
+
         }
     }
 
@@ -153,5 +160,5 @@ public class FastestAnswer extends AbstractGame implements Game {
     public void setRounds(int rounds) {
         this.rounds = rounds;
     }
-    
+
 }

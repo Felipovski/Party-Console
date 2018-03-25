@@ -53,12 +53,17 @@ public class Client {
         @Override
         public void run() {
 
+            String message = "";
+            StringBuilder initialMessage = new StringBuilder();
             try {
                 while (!singleExecutor.isShutdown()) {
 
                     serverIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    String message = serverIn.readLine();
-                    System.out.println(message);
+
+                    while ((message = serverIn.readLine()) != null) {
+                        initialMessage.append(message);
+                        System.out.println(message);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
