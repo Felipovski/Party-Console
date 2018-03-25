@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class Score {
     private List<String> players;
-    private int[] scores = {100,0,0,0};
+    private int[] scores = {100,100,100,100};
 
     public Score(List<String> players) {
 

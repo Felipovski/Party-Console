@@ -19,7 +19,7 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Map<String, PlayerWorker> playerWorkerMap;
-    private static final int MAX_PLAYERS = 4;
+    private static final int MAX_PLAYERS = 2;
     private final int PORT_NUMBER = 7070;
     public static final int ROUNDS = 6;
     private ExecutorService executor;
@@ -56,6 +56,7 @@ public class Server {
         Game game = new FastestAnswer(score, server, ROUNDS );
         Game game2 = new CardsAgainstHumanity(score, server, ROUNDS);
 
+        server.sendAll(Messages.clearScreen().toString());
         Messages.gameMessage();
         game.load();
         server.sendAll(Messages.clearScreen().toString());
