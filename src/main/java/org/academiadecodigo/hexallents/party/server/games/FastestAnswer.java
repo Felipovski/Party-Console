@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class FastestAnswer extends AbstractGame implements Game {
+public class FastestAnswer extends AbstractGame{
 
     private String[] questions;
     private String[] answers;
@@ -21,7 +21,6 @@ public class FastestAnswer extends AbstractGame implements Game {
         super(score, server, rounds);
         timer = new Timer();
     }
-
 
     @Override
     public void load() {
@@ -54,14 +53,12 @@ public class FastestAnswer extends AbstractGame implements Game {
             }
 
         }
-
         for (String s : answers){
             System.out.println(s);
         }
     }
 
     private String getQuestion(int questionIndex, BufferedReader in) throws IOException {
-
         while (questionIndex > 0) {
             in.readLine();
             questionIndex--;
@@ -70,7 +67,6 @@ public class FastestAnswer extends AbstractGame implements Game {
     }
 
     private int getQuestionNumber(int numberOfFileLines) {
-
         int questionNumber = (int) (Math.random() * numberOfFileLines);
         if (!(questionNumber % 2 == 0)) {
             questionNumber--;
@@ -107,11 +103,15 @@ public class FastestAnswer extends AbstractGame implements Game {
                     timeOut = true;
                 }
             };
-            timer.schedule(timerTask, 15000);
 
+            timer.schedule(timerTask, 20000);
+            System.out.println("timeout fora do timertask: " + timeOut);
+
+            //Handles the answers from player
             answersHandler(i);
             timeOut = false;
         }
+
         server.sendAll(Messages.clearScreen().toString());
         server.sendAll(Messages.fastestAnswerInitialMessage().toString());
         server.sendAll("<--------------------Final score-------------------->\n\n" + score.toString());
@@ -127,39 +127,41 @@ public class FastestAnswer extends AbstractGame implements Game {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
             answer.append(server.getAnswer());
 
             System.out.println(answer.toString());
 
-            if (timeOut) {
+            if(timeOut) {
+                server.sendAll("Time's up!!!");
                 return;
             }
+            System.out.println(answer.toString() + "HHHHEYEYEYEY");
 //                wait();
             if (answer.toString().equals("")){
-
                 answer.delete(0, answer.length());
                 continue;
             }
-            System.out.println("asfçjasdkfjlasjdflafasdjflasjflasjdflas");
+
+            System.out.println("NONONONONONONONO");
+
             System.out.println(answer.substring(answer.indexOf(":")+1, answer.length()));
             System.out.println(answer.substring(0,answer.indexOf(":")));
 
+
+
+
             if (answers[index].equals(answer.substring(answer.indexOf(":")+1, answer.length()))) {
-                score.changePoints(answer.substring(0, answer.indexOf(":")), 10);
+                score.changeScore(answer.substring(0, answer.indexOf(":")), 10);
                 answer.delete(0, answer.length());
-                timer.cancel();
+                timer.purge();
                 break;
             }
 
-            score.changePoints(answer.substring(0,answer.indexOf(":")), -5);
+            score.changeScore(answer.substring(0,answer.indexOf(":")), -5);
             answer.delete(0, answer.length());
 
         }
-    }
-
-    @Override
-    public void setRounds(int rounds) {
-        this.rounds = rounds;
     }
 
 }

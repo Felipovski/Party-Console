@@ -1,14 +1,14 @@
 package org.academiadecodigo.hexallents.party.server;
 
+import org.academiadecodigo.bootcamp.Prompt;
+import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
+import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 import org.academiadecodigo.hexallents.party.messages.Messages;
 import org.academiadecodigo.hexallents.party.server.games.CardsAgainstHumanity;
 import org.academiadecodigo.hexallents.party.server.games.FastestAnswer;
 import org.academiadecodigo.hexallents.party.server.games.Game;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
@@ -18,8 +18,8 @@ import java.util.concurrent.Executors;
 public class Server {
 
     private ServerSocket serverSocket;
-    private Set<PlayerWorker> playerWorkerSet;
-    private static final int MAX_PLAYERS = 1;
+    private Map<String, PlayerWorker> playerWorkerMap;
+    private static final int MAX_PLAYERS = 4;
     private final int PORT_NUMBER = 7070;
     public static final int ROUNDS = 6;
     private ExecutorService executor;
@@ -36,7 +36,7 @@ public class Server {
 
         executor = Executors.newFixedThreadPool(MAX_PLAYERS);
 
-        playerWorkerSet = new HashSet<>();
+        playerWorkerMap = new HashMap<>();
     }
 
 
@@ -56,7 +56,6 @@ public class Server {
         Game game = new FastestAnswer(score, server, ROUNDS );
         Game game2 = new CardsAgainstHumanity(score, server, ROUNDS);
 
-        game.setRounds(5);
         Messages.gameMessage();
         game.load();
         server.sendAll(Messages.clearScreen().toString());
@@ -73,16 +72,15 @@ public class Server {
         Socket socket = serverSocket.accept();
         PlayerWorker playerWorker = new PlayerWorker(socket);
 
-        playerWorkerSet.add(playerWorker);
-
-        
         playerWorker.send("What is your name?");
         String name = playerWorker.read();
         playerWorker.setName(name);
+
+        playerWorkerMap.put(playerWorker.name, playerWorker);
         executor.submit(playerWorker);
 
-        if (playerWorkerSet.size() < MAX_PLAYERS) {
-            sendAll("There are " + playerWorkerSet.size() + " players. Wait for more players");
+        if (playerWorkerMap.size() < MAX_PLAYERS) {
+            sendAll("There are " + playerWorkerMap.size() + " players. Wait for more players");
             listen();
         }
 
@@ -100,19 +98,38 @@ public class Server {
 
     public void sendAll(String string) {
 
-        for (PlayerWorker p : playerWorkerSet) {
+        for (PlayerWorker p : playerWorkerMap.values()) {
 
             p.send(string);
         }
     }
 
+    public void sendMenuPrompt(MenuInputScanner menuInputScanner, String playerName) {
+        String menuPrompt;
+
+        PlayerWorker p = playerWorkerMap.get(playerName);
+
+        menuPrompt = p.useMenuPrompt(menuInputScanner);
+
+        setAnswer(menuPrompt);
+    }
+
+    public void sendStringPrompt(StringInputScanner stringInputScanner, String playerName) {
+
+        PlayerWorker p = playerWorkerMap.get(playerName);
+
+        String stringPrompt = p.useStringPrompt(stringInputScanner);
+
+        setAnswer(stringPrompt);
+
+    }
+
+
     public List<String> getPlayerNames() {
 
         ArrayList<String> list = new ArrayList<>();
 
-        for (PlayerWorker p : playerWorkerSet) {
-            list.add(p.toString());
-        }
+        list.addAll(playerWorkerMap.keySet());
 
         return list;
     }
@@ -138,6 +155,7 @@ public class Server {
         private BufferedReader in;
         private PrintWriter out;
         private String name;
+        private Prompt prompt;
 
         private PlayerWorker(Socket socket) {
 
@@ -145,6 +163,7 @@ public class Server {
             try {
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new PrintWriter(socket.getOutputStream());
+                prompt = new Prompt(socket.getInputStream(), new PrintStream(socket.getOutputStream()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -158,14 +177,14 @@ public class Server {
 
             //Before game starts
             while (true) {
+                System.out.println("CHEGEI AQUIAQUI");
 /*
                 input.append(name + ": " + read());
                 sendAll(input.toString());
                 input.delete(0, input.length());
 */
-
                 if (gameRunning) {
-                    //sendAll("PRESS START TO BEGIN ANSWERING");
+                    System.out.println("GAME STARTED");
                     inGame();
                 }
             }
@@ -180,7 +199,6 @@ public class Server {
                 userInput.append(name + ":" + read());
                 System.out.println("NO INGAME: " + userInput.toString());
                 setAnswer(userInput.toString());
-                //notify();
                 userInput.delete(0, userInput.length());
             }
         }
@@ -195,7 +213,6 @@ public class Server {
         }
 
         private void send(String string) {
-
             out.println(string);
             out.flush();
         }
@@ -209,6 +226,25 @@ public class Server {
             }
 
             return "";
+        }
+
+        /**
+         *
+         * @param stringInputScanner
+         * @return the string input from the user
+         */
+
+        public String useStringPrompt(StringInputScanner stringInputScanner){
+            return name + ": " + prompt.getUserInput(stringInputScanner);
+        }
+
+        /**
+         *
+         * @param menuInputScanner
+         * @return the int which corresponds to the chosen option
+         */
+        public String useMenuPrompt(MenuInputScanner menuInputScanner){
+            return name + ": " + prompt.getUserInput(menuInputScanner);
         }
 
         @Override

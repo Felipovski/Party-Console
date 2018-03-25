@@ -6,5 +6,4 @@ public interface Game {
 
     void start() throws InterruptedException;
 
-    void setRounds(int rounds);
 }

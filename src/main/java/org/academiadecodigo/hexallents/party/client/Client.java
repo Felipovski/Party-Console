@@ -17,6 +17,12 @@ public class Client {
     private BufferedReader serverIn;
     private ExecutorService singleExecutor;
 
+
+    /**
+     * Asks host ip address and creates socket connection
+     *
+     * @throws IOException
+     */
     public void chat() throws IOException {
 
 
@@ -43,6 +49,11 @@ public class Client {
 
     }
 
+    /**
+     * Reads players messages
+     *
+     * @return
+     */
     private String answerReader() {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
