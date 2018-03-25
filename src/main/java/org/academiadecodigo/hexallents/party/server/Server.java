@@ -59,6 +59,7 @@ public class Server {
         game.setRounds(5);
         Messages.gameMessage();
         game.load();
+        server.sendAll(Messages.clearScreen().toString());
         try {
             game.start();
             game2.start();

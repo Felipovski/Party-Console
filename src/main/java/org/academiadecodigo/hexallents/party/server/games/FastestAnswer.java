@@ -61,6 +61,7 @@ public class FastestAnswer extends AbstractGame implements Game {
     }
 
     private String getQuestion(int questionIndex, BufferedReader in) throws IOException {
+
         while (questionIndex > 0) {
             in.readLine();
             questionIndex--;
@@ -69,6 +70,7 @@ public class FastestAnswer extends AbstractGame implements Game {
     }
 
     private int getQuestionNumber(int numberOfFileLines) {
+
         int questionNumber = (int) (Math.random() * numberOfFileLines);
         if (!(questionNumber % 2 == 0)) {
             questionNumber--;
@@ -80,11 +82,9 @@ public class FastestAnswer extends AbstractGame implements Game {
     @Override
     public void start() throws InterruptedException {
 
-        server.sendAll(Messages.clearScreen().toString());
         server.sendAll(Messages.fastestAnswerInitialMessage().toString());
         server.setGameRunning(true);
-
-        Thread.sleep(2000);
+        Thread.sleep(1000);
         server.sendAll(Messages.clearScreen().toString());
 
         /*if(!server.playersReady()){
@@ -96,6 +96,7 @@ public class FastestAnswer extends AbstractGame implements Game {
 
             server.sendAll(Messages.clearScreen().toString());
             server.sendAll(Messages.fastestAnswerInitialMessage().toString());
+            server.sendAll("<---------------CURRENT SCORE--------------->\n\n" + score.toString());
             server.sendAll("\nQuestion " + (i+1) + ": " + questions[i]);
 
             TimerTask timerTask = new TimerTask() {
@@ -107,25 +108,24 @@ public class FastestAnswer extends AbstractGame implements Game {
                 }
             };
             timer.schedule(timerTask, 15000);
+
             answersHandler(i);
             timeOut = false;
         }
-        server.sendAll("Bye, sucker");
+        server.sendAll(Messages.clearScreen().toString());
+        server.sendAll(Messages.fastestAnswerInitialMessage().toString());
+        server.sendAll("<--------------------Final score-------------------->\n\n" + score.toString());
         server.endGame();
     }
 
     private void answersHandler(int index){
+
         StringBuilder answer = new StringBuilder();
         while (true) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
             answer.append(server.getAnswer());
 
-            System.out.println(answer.toString());
+            //System.out.println(answer.toString());
 
             if(timeOut) {
                 return;
@@ -135,11 +135,8 @@ public class FastestAnswer extends AbstractGame implements Game {
                 answer.delete(0, answer.length());
                 continue;
             }
-            System.out.println(answer.substring(answer.indexOf(":")+1, answer.length()));
-            System.out.println(answer.substring(0,answer.indexOf(":")));
-
-
-
+/*            System.out.println(answer.substring(answer.indexOf(":")+1, answer.length()));
+            System.out.println(answer.substring(0,answer.indexOf(":")));*/
 
             if (answers[index].equals(answer.substring(answer.indexOf(":")+1, answer.length()))) {
                 score.changePoints(answer.substring(0, answer.indexOf(":")), 10);
@@ -150,8 +147,6 @@ public class FastestAnswer extends AbstractGame implements Game {
 
             score.changePoints(answer.substring(0,answer.indexOf(":")), -5);
             answer.delete(0, answer.length());
-
-            server.sendAll(score.toString());
 
         }
     }

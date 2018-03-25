@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Score {
     private List<String> players;
-    private int[] scores = {0,0,0,0};
+    private int[] scores = {100,0,0,0};
 
     public Score(List<String> players) {
 
@@ -29,11 +29,11 @@ public class Score {
     public String toString() {
         StringBuilder outputScore = new StringBuilder();
         int index = 0;
-
         for (String player : players){
             outputScore.append(player + ": " + scores[index] + "\t");
             index++;
         }
+        outputScore.append("\n");
         return outputScore.toString();
     }
 }
