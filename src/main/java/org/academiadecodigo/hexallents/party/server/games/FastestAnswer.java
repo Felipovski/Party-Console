@@ -21,7 +21,6 @@ public class FastestAnswer extends AbstractGame{
         timer=new Timer();
     }
 
-
     @Override
     public void load() {
         File document = new File("src/main/resources/fastest-answer/fastestAnswers.txt");
@@ -141,13 +140,13 @@ public class FastestAnswer extends AbstractGame{
             System.out.println(answer.substring(0,answer.indexOf(":")));
 
             if (answers[index].equals(answer.substring(answer.indexOf(":")+1, answer.length()))) {
-                score.changePoints(answer.substring(0, answer.indexOf(":")), 10);
+                score.changeScore(answer.substring(0, answer.indexOf(":")), 10);
                 answer.delete(0, answer.length());
                 timer.purge();
                 break;
             }
 
-            score.changePoints(answer.substring(0,answer.indexOf(":")), -5);
+            score.changeScore(answer.substring(0,answer.indexOf(":")), -5);
             answer.delete(0, answer.length());
 
         }

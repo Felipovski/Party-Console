@@ -4,7 +4,8 @@ import org.academiadecodigo.hexallents.party.server.Score;
 import org.academiadecodigo.hexallents.party.server.Server;
 
 /**
- * Created by codecadet on 24/03/2018.
+ * A generic game witch gives common properties to specific games
+ * @see Game
  */
 public abstract class AbstractGame implements Game {
 
