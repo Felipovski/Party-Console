@@ -1,6 +1,16 @@
 package org.academiadecodigo.hexallents.party.messages;
 
+/**
+ * Messages to be used during the game
+ */
+
 public class Messages {
+
+    /**
+     * Message PartyConsole
+     *
+     * @return StringBuilder Message to be displayed
+     */
 
     public static StringBuilder gameMessage(){
         StringBuilder gameMessage = new StringBuilder();
@@ -28,6 +38,12 @@ public class Messages {
         );
     }
 
+    /**
+     * Message Loading...
+     *
+     * @return Stringbuilder Message to be displayed
+     */
+
     public static StringBuilder loadingMessage(){
         StringBuilder message = new StringBuilder();
         return message.append(
@@ -46,6 +62,12 @@ public class Messages {
         );
     }
 
+    /**
+     * Message FastestAnswer
+     *
+     * @return StringBuilder Message to be displayed
+     */
+
     public static StringBuilder fastestAnswerInitialMessage(){
         StringBuilder message = new StringBuilder();
         return message.append(
@@ -63,5 +85,4 @@ public class Messages {
                         "                                                                                                                                  \n "
         );
     }
-
 }
