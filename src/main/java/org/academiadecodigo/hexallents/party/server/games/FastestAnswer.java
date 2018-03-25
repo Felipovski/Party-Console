@@ -100,11 +100,15 @@ public class FastestAnswer extends AbstractGame{
                     timeOut = true;
                 }
             };
+
             timer.schedule(timerTask, 10000);
             System.out.println("timeout fora do timertask: " + timeOut);
+
+            //Handles the answers from player
             answersHandler(i);
             timeOut = false;
         }
+
         server.sendAll("Bye, sucker");
         server.endGame();
     }
@@ -123,6 +127,7 @@ public class FastestAnswer extends AbstractGame{
             System.out.println(answer.toString());
 
             if(timeOut) {
+                server.sendAll("Time's up!!!");
                 return;
             }
 //                wait();
