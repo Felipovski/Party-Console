@@ -114,43 +114,43 @@ public class FastestAnswer extends AbstractGame{
 
         StringBuilder answer = new StringBuilder();
         while (true) {
-            try {
+            /*try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
+            }*/
 
-            answer.append(server.getAnswer());
+            synchronized (this) {
+                answer.append(server.getAnswer());
 
-            System.out.println(answer.toString());
+                System.out.println(answer.toString());
 
-            if(System.currentTimeMillis()-time >= 20000) {
-                server.sendAll("Time's up!!!");
-                return;
-            }
-            System.out.println(answer.toString() + "HHHHEYEYEYEY");
+                if (System.currentTimeMillis() - time >= 15000) {
+                    server.sendAll("Time's up!!!");
+                    return;
+                }
+                System.out.println(answer.toString() + "HHHHEYEYEYEY");
 
-            if (answer.toString().equals("")){
+                if (answer.toString().equals("")) {
+                    answer.delete(0, answer.length());
+                    continue;
+                }
+
+                System.out.println("NONONONONONONONO");
+
+                System.out.println(answer.substring(answer.indexOf(":") + 1, answer.length()));
+                System.out.println(answer.substring(0, answer.indexOf(":")));
+
+
+                if (answers[index].equals(answer.substring(answer.indexOf(":") + 1, answer.length()))) {
+                    score.changeScore(answer.substring(0, answer.indexOf(":")), 10);
+                    answer.delete(0, answer.length());
+                    break;
+                }
+
+                score.changeScore(answer.substring(0, answer.indexOf(":")), -5);
                 answer.delete(0, answer.length());
-                continue;
             }
-
-            System.out.println("NONONONONONONONO");
-
-            System.out.println(answer.substring(answer.indexOf(":")+1, answer.length()));
-            System.out.println(answer.substring(0,answer.indexOf(":")));
-
-
-
-
-            if (answers[index].equals(answer.substring(answer.indexOf(":")+1, answer.length()))) {
-                score.changeScore(answer.substring(0, answer.indexOf(":")), 10);
-                answer.delete(0, answer.length());
-                break;
-            }
-
-            score.changeScore(answer.substring(0,answer.indexOf(":")), -5);
-            answer.delete(0, answer.length());
 
         }
     }
