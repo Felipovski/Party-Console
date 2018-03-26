@@ -25,7 +25,6 @@ public class Main {
 
         Score score = new Score(players);
         Game game = new FastestAnswer(score, server, Server.ROUNDS );
-        Game game2 = new CardsAgainstHumanity(score, server, Server.ROUNDS);
 
         server.sendAll(Messages.clearScreen().toString());
         server.sendAll(Messages.gameMessage().toString());
@@ -38,7 +37,6 @@ public class Main {
         server.sendAll(Messages.clearScreen().toString());
         try {
             game.start();
-            game2.start();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

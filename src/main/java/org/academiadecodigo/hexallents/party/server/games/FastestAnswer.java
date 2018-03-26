@@ -107,6 +107,7 @@ public class FastestAnswer extends AbstractGame{
         server.sendAll(Messages.clearScreen().toString());
         server.sendAll(Messages.fastestAnswerInitialMessage().toString());
         server.sendAll("<--------------------Final score-------------------->\n\n" + score.toString());
+        endScreen();
         server.endGame();
     }
 
@@ -153,6 +154,10 @@ public class FastestAnswer extends AbstractGame{
             }
 
         }
+    }
+
+    public void endScreen(){
+        server.sendAll(score.winner());
     }
 
 }

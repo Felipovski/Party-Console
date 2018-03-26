@@ -7,11 +7,12 @@ import java.util.List;
  */
 public class Score {
     private List<String> players;
-    private int[] scores = {100,100,100,100};
+    private int[] scores;
 
     public Score(List<String> players) {
-
         this.players = players;
+        scores = new int[this.players.size()];
+        fillScores();
     }
 
     /**
@@ -30,6 +31,12 @@ public class Score {
         }
     }
 
+    private void fillScores(){
+        for (int i =0; i < scores.length; i++) {
+            scores[i] = 100;
+        }
+    }
+
     @Override
     public String toString() {
         StringBuilder outputScore = new StringBuilder();
@@ -40,5 +47,19 @@ public class Score {
         }
         outputScore.append("\n");
         return outputScore.toString();
+    }
+
+    public String winner(){
+        int maxValue = 0;
+        int maxIndex = 0;
+
+        for (int i=0; i < scores.length; i++) {
+            if (scores[i] > maxValue ){
+               maxValue = scores[i];
+               maxIndex = i;
+            }
+        }
+
+        return players.get(maxIndex) + " has " +maxValue + " points.\nTHE WINNER IS YOU ";
     }
 }

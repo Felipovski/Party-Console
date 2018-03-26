@@ -18,9 +18,9 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Map<String, PlayerWorker> playerWorkerMap;
-    private static final int MAX_PLAYERS = 3;
+    private static final int MAX_PLAYERS = 1;
     private final int PORT_NUMBER = 7070;
-    public static final int ROUNDS = 6;
+    public static final int ROUNDS = 2;
     private ExecutorService executor;
     private boolean gameRunning;
     private String answer = "";
@@ -68,12 +68,13 @@ public class Server {
      * Ends Server Socket and Game
      */
     public void endGame() {
+        executor.shutdown();
         try {
             serverSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        executor.shutdown();
+
     }
 
     private void makeThreadsWait() {
