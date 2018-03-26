@@ -103,6 +103,12 @@ public class Server {
     }
 
 
+        /**
+         * Sends a Menu Prompt to the desired player
+         *
+         * @param menuInputScanner Menu displayed to player
+         * @param playerName The player's name
+         */
     public void sendMenuPrompt(MenuInputScanner menuInputScanner, String playerName) {
         String menuPrompt;
 
@@ -114,6 +120,12 @@ public class Server {
     }
 
 
+        /**
+         * Sends a String to the player
+         *
+         * @param stringInputScanner String displayed to player
+         * @param playerName The player's name
+         */
     public void sendStringPrompt(StringInputScanner stringInputScanner, String playerName) {
 
         PlayerWorker p = playerWorkerMap.get(playerName);
@@ -142,12 +154,9 @@ public class Server {
         this.gameRunning = gameRunning;
     }
 
-<<<<<<< HEAD
 
-    public void setAnswer(String answer) {
-=======
     public synchronized void setAnswer(String answer) {
->>>>>>> 815d815ab79b24b6c5b5acb928a8ae938a90d127
+
         System.out.println("NO SET: " + answer);
         this.answer = answer;
     }
