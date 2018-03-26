@@ -18,9 +18,9 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Map<String, PlayerWorker> playerWorkerMap;
-    private static final int MAX_PLAYERS = 1;
+    private static final int MAX_PLAYERS = 3;
     private final int PORT_NUMBER = 7070;
-    public static final int ROUNDS = 2;
+    public static final int ROUNDS = 10;
     private ExecutorService executor;
     private boolean gameRunning;
     private String answer = "";
