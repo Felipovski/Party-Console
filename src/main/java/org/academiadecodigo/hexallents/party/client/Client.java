@@ -16,8 +16,6 @@ import java.util.concurrent.Executors;
 public class Client {
 
     private Socket socket;
-    private PrintWriter serverOutput;
-    private BufferedReader serverIn;
     private ExecutorService singleExecutor;
 
 
@@ -33,7 +31,7 @@ public class Client {
         String ip = answerReader();
 
         socket = new Socket(ip, 7070);
-        serverOutput = new PrintWriter(socket.getOutputStream(), true);
+        PrintWriter serverOutput = new PrintWriter(socket.getOutputStream(), true);
 
 
         singleExecutor = Executors.newSingleThreadExecutor();
@@ -67,7 +65,7 @@ public class Client {
             try {
                 while (!singleExecutor.isShutdown()) {
 
-                    serverIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    BufferedReader serverIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
                     while ((message = serverIn.readLine()) != null) {
                         initialMessage.append(message);

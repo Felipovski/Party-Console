@@ -77,16 +77,10 @@ public class FastestAnswer extends AbstractGame{
     }
 
 
-    /**
-     * Starts the game
-     *
-     * @throws InterruptedException
-     */
     @Override
     public void start() {
 
         server.sendAll(Messages.fastestAnswerInitialMessage().toString());
-        server.setGameRunning(true);
         server.sendAll(Messages.clearScreen().toString());
 
 
@@ -98,12 +92,10 @@ public class FastestAnswer extends AbstractGame{
             server.sendAll("\nQuestion " + (i+1) + ": " + questions[i]);
 
             time = System.currentTimeMillis();
-            //Handles the answers from player
             handleAnswer(i);
         }
 
         server.sendAll(Messages.clearScreen().toString());
-//        server.sendAll(Messages.fastestAnswerInitialMessage().toString());
 
 
         endScreen();
@@ -114,11 +106,6 @@ public class FastestAnswer extends AbstractGame{
 
         StringBuilder answer = new StringBuilder();
         while (true) {
-            /*try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }*/
 
             synchronized (this) {
                 answer.append(server.getAnswer());
@@ -136,7 +123,6 @@ public class FastestAnswer extends AbstractGame{
                     continue;
                 }
 
-                System.out.println("NONONONONONONONO");
 
                 System.out.println(answer.substring(answer.indexOf(":") + 1, answer.length()));
                 System.out.println(answer.substring(0, answer.indexOf(":")));
@@ -155,8 +141,7 @@ public class FastestAnswer extends AbstractGame{
         }
     }
 
-    public void endScreen(){
-      //  Messages.clearScreen();
+    private void endScreen(){
         server.sendAll("<--------------------Final score-------------------->\n\n" + score.toString());
         server.sendAll(Messages.winner().toString());
         server.sendAll(score.winner());

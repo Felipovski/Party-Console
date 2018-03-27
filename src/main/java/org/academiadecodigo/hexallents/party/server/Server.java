@@ -18,13 +18,11 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Map<String, PlayerWorker> playerWorkerMap;
-    private static final int MAX_PLAYERS = 4;
+    private static final int MAX_PLAYERS = 3;
     private final int PORT_NUMBER = 7070;
     public static final int ROUNDS = 10;
     private ExecutorService executor;
-    private boolean gameRunning;
     private String answer = "";
-    int i = 0;
 
 
     public Server() {
@@ -106,39 +104,6 @@ public class Server {
 
 
     /**
-     * Sends a Menu Prompt to the desired player
-     *
-     * @param menuInputScanner Menu displayed to player
-     * @param playerName       The player's name
-     */
-    public void sendMenuPrompt(MenuInputScanner menuInputScanner, String playerName) {
-        String menuPrompt;
-
-        PlayerWorker p = playerWorkerMap.get(playerName);
-
-        menuPrompt = p.useMenuPrompt(menuInputScanner);
-
-        setAnswer(menuPrompt);
-    }
-
-
-    /**
-     * Sends a String to the player
-     *
-     * @param stringInputScanner String displayed to player
-     * @param playerName         The player's name
-     */
-    public void sendStringPrompt(StringInputScanner stringInputScanner, String playerName) {
-
-        PlayerWorker p = playerWorkerMap.get(playerName);
-
-        String stringPrompt = p.useStringPrompt(stringInputScanner);
-
-        setAnswer(stringPrompt);
-
-    }
-
-    /**
      * Gets player's names
      *
      * @return List of Players Names
@@ -152,12 +117,8 @@ public class Server {
         return list;
     }
 
-    public void setGameRunning(boolean gameRunning) {
-        this.gameRunning = gameRunning;
-    }
 
-
-    public synchronized void setAnswer(String answer) {
+    private synchronized void setAnswer(String answer) {
 
         System.out.println("NO SET: " + answer);
         this.answer = answer;
@@ -196,12 +157,12 @@ public class Server {
             makeThreadsWait();
             System.out.println("GAME STARTED");
             inGame();
+            closeSocket();
         }
 
         private void inGame() {
 
             StringBuilder userInput = new StringBuilder();
-            System.out.println("INGAME");
 
             while (true) {
                 userInput.append(name + ":" + read());
@@ -236,29 +197,12 @@ public class Server {
             return "";
         }
 
-        /**
-         * @param stringInputScanner
-         * @return the string input from the user
-         */
-
-        public String useStringPrompt(StringInputScanner stringInputScanner) {
-            return name + ": " + prompt.getUserInput(stringInputScanner);
-        }
-
-        /**
-         * @param menuInputScanner
-         * @return the int which corresponds to the chosen option
-         */
-        public String useMenuPrompt(MenuInputScanner menuInputScanner) {
-            return name + ": " + prompt.getUserInput(menuInputScanner);
-        }
-
         @Override
         public String toString() {
             return name;
         }
 
-        public void setName(String name) {
+        private void setName(String name) {
             this.name = name;
         }
     }
