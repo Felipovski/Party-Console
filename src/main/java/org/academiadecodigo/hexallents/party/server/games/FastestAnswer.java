@@ -7,8 +7,6 @@ import org.academiadecodigo.hexallents.party.server.Server;
 import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Class Fastest Answer game
@@ -85,7 +83,7 @@ public class FastestAnswer extends AbstractGame{
      * @throws InterruptedException
      */
     @Override
-    public void start() throws InterruptedException {
+    public void start() {
 
         server.sendAll(Messages.fastestAnswerInitialMessage().toString());
         server.setGameRunning(true);
@@ -101,17 +99,18 @@ public class FastestAnswer extends AbstractGame{
 
             time = System.currentTimeMillis();
             //Handles the answers from player
-            answersHandler(i);
+            handleAnswer(i);
         }
 
         server.sendAll(Messages.clearScreen().toString());
-        server.sendAll(Messages.fastestAnswerInitialMessage().toString());
-        server.sendAll("<--------------------Final score-------------------->\n\n" + score.toString());
+//        server.sendAll(Messages.fastestAnswerInitialMessage().toString());
+
+
         endScreen();
         server.endGame();
     }
 
-    private void answersHandler(int index){
+    private void handleAnswer(int index){
 
         StringBuilder answer = new StringBuilder();
         while (true) {
@@ -157,6 +156,9 @@ public class FastestAnswer extends AbstractGame{
     }
 
     public void endScreen(){
+      //  Messages.clearScreen();
+        server.sendAll("<--------------------Final score-------------------->\n\n" + score.toString());
+        server.sendAll(Messages.winner().toString());
         server.sendAll(score.winner());
     }
 

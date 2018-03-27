@@ -14,8 +14,7 @@ public interface Game {
     /**
      * starts the game
      *
-     * @throws InterruptedException
      */
-    void start() throws InterruptedException;
+    void start();
 
 }

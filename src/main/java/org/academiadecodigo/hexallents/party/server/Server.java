@@ -11,14 +11,14 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-    /**
-     * Creates a Server
-     */
+/**
+ * Creates a Server
+ */
 public class Server {
 
     private ServerSocket serverSocket;
     private Map<String, PlayerWorker> playerWorkerMap;
-    private static final int MAX_PLAYERS = 3;
+    private static final int MAX_PLAYERS = 4;
     private final int PORT_NUMBER = 7070;
     public static final int ROUNDS = 10;
     private ExecutorService executor;
@@ -93,6 +93,7 @@ public class Server {
 
     /**
      * Sends a message to all Player Workers
+     *
      * @param string Message to send
      */
     public void sendAll(String string) {
@@ -104,12 +105,12 @@ public class Server {
     }
 
 
-        /**
-         * Sends a Menu Prompt to the desired player
-         *
-         * @param menuInputScanner Menu displayed to player
-         * @param playerName The player's name
-         */
+    /**
+     * Sends a Menu Prompt to the desired player
+     *
+     * @param menuInputScanner Menu displayed to player
+     * @param playerName       The player's name
+     */
     public void sendMenuPrompt(MenuInputScanner menuInputScanner, String playerName) {
         String menuPrompt;
 
@@ -121,12 +122,12 @@ public class Server {
     }
 
 
-        /**
-         * Sends a String to the player
-         *
-         * @param stringInputScanner String displayed to player
-         * @param playerName The player's name
-         */
+    /**
+     * Sends a String to the player
+     *
+     * @param stringInputScanner String displayed to player
+     * @param playerName         The player's name
+     */
     public void sendStringPrompt(StringInputScanner stringInputScanner, String playerName) {
 
         PlayerWorker p = playerWorkerMap.get(playerName);

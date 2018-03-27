@@ -3,9 +3,9 @@ package org.academiadecodigo.hexallents.party;
 import org.academiadecodigo.hexallents.party.messages.Messages;
 import org.academiadecodigo.hexallents.party.server.Score;
 import org.academiadecodigo.hexallents.party.server.Server;
-import org.academiadecodigo.hexallents.party.server.games.CardsAgainstHumanity;
 import org.academiadecodigo.hexallents.party.server.games.FastestAnswer;
 import org.academiadecodigo.hexallents.party.server.games.Game;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class Main {
         List<String> players = server.getPlayerNames();
 
         Score score = new Score(players);
-        Game game = new FastestAnswer(score, server, Server.ROUNDS );
+        Game game = new FastestAnswer(score, server, Server.ROUNDS);
 
         server.sendAll(Messages.clearScreen().toString());
         server.sendAll(Messages.gameMessage().toString());
@@ -35,11 +35,7 @@ public class Main {
         }
         game.load();
         server.sendAll(Messages.clearScreen().toString());
-        try {
-            game.start();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        game.start();
     }
 
 }

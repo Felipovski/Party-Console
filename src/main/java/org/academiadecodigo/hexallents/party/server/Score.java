@@ -60,6 +60,6 @@ public class Score {
             }
         }
 
-        return players.get(maxIndex) + " has " +maxValue + " points.\nTHE WINNER IS YOU ";
+        return "THE WINNER IS " + players.get(maxIndex) + " WITH " +maxValue + " POINTS!\n";
     }
 }
